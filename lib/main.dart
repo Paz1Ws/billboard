@@ -2,13 +2,14 @@ import 'package:billboard/routes/router.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'theme/apptheme.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: '.env');
 
-  runApp(MainApp());
+  runApp(ProviderScope(child: MainApp()));
 }
 
 class MainApp extends StatelessWidget {
