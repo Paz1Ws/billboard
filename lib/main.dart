@@ -1,8 +1,14 @@
-import 'package:billboard/theme/apptheme.dart';
+import 'package:billboard/routes/router.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MainApp());
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+import 'theme/apptheme.dart';
+
+Future<void> main() async {
+  await dotenv.load(fileName: '.env');
+
+  runApp(MainApp());
 }
 
 class MainApp extends StatelessWidget {
@@ -10,14 +16,10 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: appRouter,
       debugShowCheckedModeBanner: false,
       theme: AppTheme().GetTheme(),
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
     );
   }
 }

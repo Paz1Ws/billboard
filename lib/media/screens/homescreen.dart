@@ -1,6 +1,5 @@
 import 'package:billboard/config/ambient.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class HomeScreen extends StatelessWidget {
   static const String name = 'home';
@@ -12,9 +11,7 @@ class HomeScreen extends StatelessWidget {
       ),
       body: Center(
         child: ElevatedButton(
-          onPressed: () {
-            Navigator.pushNamed(context, '/details');
-          },
+          onPressed: () {},
           child: Text(Ambient.DbKey),
         ),
       ),
