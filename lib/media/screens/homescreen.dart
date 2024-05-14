@@ -1,56 +1,96 @@
-import 'package:billboard/config/ambient.dart';
-import 'package:billboard/providers/movies_repository.dart';
+import 'package:billboard/media/screens/loading_screen.dart';
+import 'package:billboard/providers/movie_loading.dart';
+import 'package:billboard/providers/movies_providers.dart';
+import 'package:billboard/widgets/movies/listviewshow.dart';
+import 'package:billboard/providers/movies_slide_prov.dart';
+import 'package:billboard/widgets/movies/slideshow.dart';
+import 'package:billboard/widgets/shared/custom_navigation.dart';
 import 'package:billboard/widgets/shared/movie_appbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeScreen extends StatelessWidget {
-  static const String name = 'home';
+  static const name = 'home-screen';
+
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: const _HomeScreen(),
-      ),
+    return const Scaffold(
+      body: _HomeView(),
+      bottomNavigationBar: CustomBottomNavigation(),
     );
   }
 }
 
-class _HomeScreen extends ConsumerStatefulWidget {
-  const _HomeScreen();
+class _HomeView extends ConsumerStatefulWidget {
+  const _HomeView();
 
   @override
   _HomeViewState createState() => _HomeViewState();
 }
 
-class _HomeViewState extends ConsumerState<_HomeScreen> {
+class _HomeViewState extends ConsumerState<_HomeView> {
   @override
   void initState() {
     super.initState();
 
     ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+    ref.read(popularMoviesProvider.notifier).loadNextPage();
+    ref.read(topRatedMoviesProvider.notifier).loadNextPage();
+    ref.read(upcomingMoviesProvider.notifier).loadNextPage();
   }
 
   @override
   Widget build(BuildContext context) {
+    final initialLoading = ref.watch(initialLoadingProvider);
+    if (initialLoading) return const FullScreenLoader();
+    final slideShowMovies = ref.watch(moviesSlideshowProvider);
     final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
+    final popularMovies = ref.watch(popularMoviesProvider);
+    final topRatedMovies = ref.watch(topRatedMoviesProvider);
+    final upcomingMovies = ref.watch(upcomingMoviesProvider);
 
-    return Column(
-      children: [
-        CustomAppbar(),
-        Expanded(
-          child: ListView.builder(
-            itemCount: nowPlayingMovies.length,
-            itemBuilder: (context, index) {
-              final movie = nowPlayingMovies[index];
-              return ListTile(
-                title: Text(movie.title),
-              );
-            },
-          ),
-        )
-      ],
-    );
+    return CustomScrollView(slivers: [
+      const SliverAppBar(
+        floating: true,
+        flexibleSpace: FlexibleSpaceBar(
+          title: CustomAppbar(),
+        ),
+      ),
+      SliverList(
+          delegate: SliverChildBuilderDelegate((context, index) {
+        return Column(
+          children: [
+            MoviesSlideshow(movies: slideShowMovies),
+            MovieHorizontalListview(
+                movies: nowPlayingMovies,
+                title: 'En cines',
+                subTitle: 'Lunes 20',
+                loadNextPage: () =>
+                    ref.read(nowPlayingMoviesProvider.notifier).loadNextPage()),
+            MovieHorizontalListview(
+                movies: upcomingMovies,
+                title: 'Próximamente',
+                subTitle: 'En este mes',
+                loadNextPage: () =>
+                    ref.read(upcomingMoviesProvider.notifier).loadNextPage()),
+            MovieHorizontalListview(
+                movies: popularMovies,
+                title: 'Populares',
+                // subTitle: '',
+                loadNextPage: () =>
+                    ref.read(popularMoviesProvider.notifier).loadNextPage()),
+            MovieHorizontalListview(
+                movies: topRatedMovies,
+                title: 'Mejor calificadas',
+                subTitle: 'Desde siempre',
+                loadNextPage: () =>
+                    ref.read(topRatedMoviesProvider.notifier).loadNextPage()),
+            const SizedBox(height: 10),
+          ],
+        );
+      }, childCount: 1)),
+    ]);
   }
 }
