@@ -1,36 +1,21 @@
-import 'package:billboard/presentation/screens/loading_screen.dart';
 import 'package:billboard/presentation/providers/movie/movie_loading.dart';
 import 'package:billboard/presentation/providers/movie/movies_providers.dart';
-import 'package:billboard/presentation/widgets/movies/listviewshow.dart';
 import 'package:billboard/presentation/providers/movie/movies_slide_prov.dart';
+import 'package:billboard/presentation/screens/loading_screen.dart';
+import 'package:billboard/presentation/widgets/movies/listviewshow.dart';
 import 'package:billboard/presentation/widgets/movies/slideshow.dart';
-import 'package:billboard/presentation/widgets/shared/custom_navigation.dart';
 import 'package:billboard/presentation/widgets/shared/movie_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeScreen extends StatelessWidget {
-  static const name = 'home-screen';
-
-  const HomeScreen({super.key});
+class HomeView extends ConsumerStatefulWidget {
+  const HomeView();
 
   @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: _HomeView(),
-      bottomNavigationBar: CustomBottomNavigation(),
-    );
-  }
+  HomeViewState createState() => HomeViewState();
 }
 
-class _HomeView extends ConsumerStatefulWidget {
-  const _HomeView();
-
-  @override
-  _HomeViewState createState() => _HomeViewState();
-}
-
-class _HomeViewState extends ConsumerState<_HomeView> {
+class HomeViewState extends ConsumerState<HomeView> {
   @override
   void initState() {
     super.initState();

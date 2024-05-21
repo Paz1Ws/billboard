@@ -1,6 +1,6 @@
 import 'package:billboard/domain/datasources/movie_dt.dart';
 import 'package:billboard/domain/entities/movie_entity.dart';
-import 'package:billboard/infrastructure/repositories/movies_repositorie.dart';
+import 'package:billboard/domain/repositories/movie_rp.dart';
 
 class MovieRepositoryImpl extends MoviesRepository {
   final MoviesDatasource datasource;
