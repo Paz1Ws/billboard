@@ -1,5 +1,7 @@
 import 'package:billboard/presentation/screens/home_screen.dart';
 import 'package:billboard/presentation/screens/movie_screen.dart';
+import 'package:billboard/presentation/views/home_v.dart/TvContent_view.dart';
+
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(initialLocation: '/home/0', routes: [
@@ -21,6 +23,13 @@ final appRouter = GoRouter(initialLocation: '/home/0', routes: [
             final movieId = state.pathParameters['id'] ?? 'no-id';
 
             return MovieScreen(movieId: movieId);
+          },
+        ),
+        GoRoute(
+          path: 'tvMovies/:id',
+          name: TVContentView.name,
+          builder: (context, state) {
+            return TVContentView();
           },
         ),
       ]),

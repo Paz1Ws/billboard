@@ -1,4 +1,5 @@
 import 'package:billboard/domain/entities/movie_entity.dart';
+import 'package:billboard/presentation/providers/DB/local_storage_provider.dart';
 import 'package:billboard/presentation/providers/actor/actorbymovie.dart';
 import 'package:billboard/presentation/providers/movie/movie_info.dart';
 import 'package:flutter/material.dart';
@@ -181,24 +182,35 @@ class _ActorsByMovie extends ConsumerWidget {
   }
 }
 
-class _CustomSliverAppBar extends StatelessWidget {
+final isFavorite = FutureProvider.family((ref, int movieId) {
+  final repo = ref.watch(localStorageProvider);
+  return repo.movieFavorite(movieId);
+});
+
+class _CustomSliverAppBar extends ConsumerWidget {
   final Movie movie;
 
   const _CustomSliverAppBar({required this.movie});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+    final favorite = ref.watch(isFavorite(movie.id));
     final size = MediaQuery.of(context).size;
     return SliverAppBar(
       actions: [
         IconButton(
-          icon: Icon(
-            Icons.favorite_border,
-            color: Colors.white,
-            size: 30,
-          ),
-          onPressed: () {},
-        ),
+            onPressed: () async {
+              await ref.watch(localStorageProvider).toggleFavorite(movie);
+              ref.invalidate(isFavorite(movie.id));
+            },
+            icon: favorite.when(
+              data: (isFavorite) => Icon(
+                isFavorite ? Icons.favorite : Icons.favorite_border_outlined,
+                color: Colors.red,
+              ),
+              loading: () => const CircularProgressIndicator(strokeWidth: 2),
+              error: (error, _) => const Icon(Icons.error),
+            )),
       ],
       backgroundColor: Colors.black,
       expandedHeight: size.height * 0.7,

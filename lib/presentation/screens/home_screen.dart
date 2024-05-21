@@ -1,5 +1,6 @@
 import 'package:billboard/presentation/views/home_v.dart/favorites_view.dart';
 import 'package:billboard/presentation/views/home_v.dart/home_view.dart';
+import 'package:billboard/presentation/views/home_v.dart/TvContent_view.dart';
 import 'package:flutter/material.dart';
 import 'package:billboard/presentation/widgets/shared/custom_navigation.dart';
 
@@ -7,11 +8,11 @@ class HomeScreen extends StatelessWidget {
   static const name = 'home-screen';
   final int pageIndex;
 
-  HomeScreen({super.key, required this.pageIndex});
+  const HomeScreen({super.key, required this.pageIndex});
 
-  final viewRoutes = <Widget>[
+  final viewRoutes = const <Widget>[
     HomeView(),
-    SizedBox(),
+    TVContentView(),
     FavoritesView(),
   ];
 

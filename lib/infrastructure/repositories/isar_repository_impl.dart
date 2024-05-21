@@ -1,9 +1,10 @@
 import 'package:billboard/domain/datasources/localstorage_dt.dart';
 import 'package:billboard/domain/entities/movie_entity.dart';
+import 'package:billboard/domain/repositories/localStorage_rp.dart';
 
-class IsarDatasource extends LocalStorageDataSource {
+class LocalStorageRepositoryImpl extends LocalStorageRepository {
   final LocalStorageDataSource datasource;
-  IsarDatasource(this.datasource);
+  LocalStorageRepositoryImpl(this.datasource);
   @override
   Future<List<Movie>> loadFavoriteMovies() {
     return datasource.loadFavoriteMovies();
