@@ -22,7 +22,7 @@ class TvMoviesViewState extends ConsumerState<TVContentView> {
     final tvMovies = ref.watch(tvMovieProv);
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text("TvMovies")),
+        title: Center(child: Text("Tv Popular")),
       ),
       body: Container(
         child: ListView(
@@ -30,7 +30,7 @@ class TvMoviesViewState extends ConsumerState<TVContentView> {
             MovieHorizontalListview(
               movies: tvMovies,
               itemCount: tvMovies.length,
-              title: "Movies",
+              title: "TvMovies",
               subTitle: "Popular Movies",
               loadNextPage: () => ref.read(tvMovieProv.notifier).loadNextPage(),
             ),
